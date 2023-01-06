@@ -21,7 +21,7 @@ namespace WebApplication3.Controllers
             _Configuration = Configuration;
         }
         [HttpGet("laydanhsachlophoc")]
-        public IActionResult laydanhsachlophoc(string tukhoa,int mavitri,int makynang)
+        public IActionResult laydanhsachlophoc(string tukhoa,int mavitri,int makynang,string mataikhoan)
         {
             List<khoahoc> listdata = new List<khoahoc>();
             string query = "tim_kiem_khoa_hoc";
@@ -48,6 +48,11 @@ namespace WebApplication3.Controllers
                         ParameterName = "p_makynang",
                         Value = makynang
                     });
+                    MyCommand.Parameters.Add(new NpgsqlParameter()
+                    {
+                        ParameterName = "p_mataikhoan",
+                        Value = mataikhoan
+                    });
                     string resultSetReferenceCommand = string.Empty;
                     using (var MyReader = MyCommand.ExecuteReader())
                     {
@@ -67,10 +72,83 @@ namespace WebApplication3.Controllers
             return Ok(listdata);      
         }
         [HttpGet("laychitietkhoahoc")]
-        public IActionResult laychitietkhoahoc(int makhoahoc)
+        public IActionResult laychitietkhoahoc(int makhoahoc,string mataikhoan)
         {
             var listdata = new khoahoc();
             string query = "lay_chi_tiet_khoahoc";
+            string sqlcon = _Configuration.GetConnectionString("PosgresqlConection");
+            using (NpgsqlConnection MyConn = new NpgsqlConnection(sqlcon))
+            {
+                MyConn.Open();
+                var mytrans = MyConn.BeginTransaction();
+                using (NpgsqlCommand MyCommand = new NpgsqlCommand(query, MyConn))
+                {
+                    MyCommand.CommandType = CommandType.StoredProcedure;
+                    MyCommand.Parameters.Add(new NpgsqlParameter()
+                    {
+                        ParameterName = "p_makhoahoc",
+                        Value = makhoahoc
+                    });
+                    MyCommand.Parameters.Add(new NpgsqlParameter()
+                    {
+                        ParameterName = "p_mataikhoan",
+                        Value = mataikhoan
+                    });
+                    string resultSetReferenceCommand = string.Empty;
+                    using (var MyReader = MyCommand.ExecuteReader())
+                    {
+                        if (MyReader.Read())
+                        {
+                            resultSetReferenceCommand = $"FETCH ALL IN \"{MyReader[0]}\";";
+
+                        }
+                    }
+                    listdata = MyConn.QueryFirstOrDefault<khoahoc>(resultSetReferenceCommand, null, commandType: CommandType.Text, transaction: null);
+                    mytrans.Commit();
+                    MyConn.Close();
+                }
+            }
+            //var jsonRE = JsonConvert.SerializeObject(listdata);
+            return Ok(listdata);
+        }
+        [HttpGet("dangkykhoahoc")]
+        public IActionResult dangkykhoahoc(int makhoahoc,string mataikhoan)
+        {
+            string query = "dangky_khoahoc";
+            string sqlcon = _Configuration.GetConnectionString("PosgresqlConection");
+            using (NpgsqlConnection MyConn = new NpgsqlConnection(sqlcon))
+            {
+                MyConn.Open();
+                var mytrans = MyConn.BeginTransaction();
+                using (NpgsqlCommand MyCommand = new NpgsqlCommand(query, MyConn))
+                {
+                    MyCommand.CommandType = CommandType.StoredProcedure;
+                    MyCommand.Parameters.Add(new NpgsqlParameter()
+                    {
+                        ParameterName = "p_makhoahoc",
+                        Value = makhoahoc
+                    });
+                    MyCommand.Parameters.Add(new NpgsqlParameter()
+                    {
+                        ParameterName = "p_mataikhoan",
+                        Value = mataikhoan
+                    });
+                    string resultSetReferenceCommand = string.Empty;
+                    using (var MyReader = MyCommand.ExecuteReader())
+                    {
+                    }
+                    mytrans.Commit();
+                    MyConn.Close();
+                }
+            }
+            //var jsonRE = JsonConvert.SerializeObject(listdata);
+            return Ok("Thành Công");
+        }
+        [HttpGet("laydanhsachcomment")]
+        public IActionResult laydanhsachcomment(int makhoahoc)
+        {
+            List<danhsach_comment> listdata = new List<danhsach_comment>();
+            string query = "lay_comment_khoahoc";
             string sqlcon = _Configuration.GetConnectionString("PosgresqlConection");
             using (NpgsqlConnection MyConn = new NpgsqlConnection(sqlcon))
             {
@@ -90,16 +168,55 @@ namespace WebApplication3.Controllers
                         if (MyReader.Read())
                         {
                             resultSetReferenceCommand = $"FETCH ALL IN \"{MyReader[0]}\";";
+                            //resultSetReferenceCommand = $"FETCH ALL IN \" + MyReader[0]";
 
                         }
                     }
-                    listdata = MyConn.QueryFirst<khoahoc>(resultSetReferenceCommand, null, commandType: CommandType.Text, transaction: null);
+                    listdata = MyConn.Query<danhsach_comment>(resultSetReferenceCommand, null, commandType: CommandType.Text, transaction: null).ToList();
                     mytrans.Commit();
                     MyConn.Close();
                 }
             }
             //var jsonRE = JsonConvert.SerializeObject(listdata);
             return Ok(listdata);
+        }
+        [HttpGet("themcomment")]
+        public IActionResult themcomment(int makhoahoc, string mataikhoan, string comment)
+        {
+            string query = "them_comment_khoahoc";
+            string sqlcon = _Configuration.GetConnectionString("PosgresqlConection");
+            using (NpgsqlConnection MyConn = new NpgsqlConnection(sqlcon))
+            {
+                MyConn.Open();
+                var mytrans = MyConn.BeginTransaction();
+                using (NpgsqlCommand MyCommand = new NpgsqlCommand(query, MyConn))
+                {
+                    MyCommand.CommandType = CommandType.StoredProcedure;
+                    MyCommand.Parameters.Add(new NpgsqlParameter()
+                    {
+                        ParameterName = "p_makhoahoc",
+                        Value = makhoahoc
+                    });
+                    MyCommand.Parameters.Add(new NpgsqlParameter()
+                    {
+                        ParameterName = "p_mataikhoan",
+                        Value = mataikhoan
+                    });
+                    MyCommand.Parameters.Add(new NpgsqlParameter()
+                    {
+                        ParameterName = "p_comment",
+                        Value = comment
+                    });
+                    string resultSetReferenceCommand = string.Empty;
+                    using (var MyReader = MyCommand.ExecuteReader())
+                    {
+                    }
+                    mytrans.Commit();
+                    MyConn.Close();
+                }
+            }
+            //var jsonRE = JsonConvert.SerializeObject(listdata);
+            return Ok("Thành Công");
         }
     }
 
