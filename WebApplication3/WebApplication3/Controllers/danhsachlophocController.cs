@@ -93,7 +93,7 @@ namespace WebApplication3.Controllers
 
                         }
                     }
-                    listdata = MyConn.QueryFirst<khoahoc>(resultSetReferenceCommand, null, commandType: CommandType.Text, transaction: null);
+                    listdata = MyConn.QueryFirstOrDefault<khoahoc>(resultSetReferenceCommand, null, commandType: CommandType.Text, transaction: null);
                     mytrans.Commit();
                     MyConn.Close();
                 }

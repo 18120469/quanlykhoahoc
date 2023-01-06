@@ -565,19 +565,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PHONG\\.nuget\\packages\\": {}
+    "C:\\Users\\TRUA\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\test\\WebApplication3\\WebApplication3\\WebApplication3.csproj",
+      "projectUniqueName": "C:\\Users\\TRUA\\Documents\\GitHub\\quanlykhoahoc\\WebApplication3\\WebApplication3\\WebApplication3.csproj",
       "projectName": "WebApplication3",
-      "projectPath": "D:\\test\\WebApplication3\\WebApplication3\\WebApplication3.csproj",
-      "packagesPath": "C:\\Users\\PHONG\\.nuget\\packages\\",
-      "outputPath": "D:\\test\\WebApplication3\\WebApplication3\\obj\\",
+      "projectPath": "C:\\Users\\TRUA\\Documents\\GitHub\\quanlykhoahoc\\WebApplication3\\WebApplication3\\WebApplication3.csproj",
+      "packagesPath": "C:\\Users\\TRUA\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\TRUA\\Documents\\GitHub\\quanlykhoahoc\\WebApplication3\\WebApplication3\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\PHONG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\TRUA\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -639,7 +639,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }
